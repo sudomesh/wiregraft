@@ -2,7 +2,7 @@
 
 import subprocess
 import wgconfig
-from bottle import route, run, template
+from bottle import route, request, response, run, template
 
 PORT=8080
 CLIENT_SUBNET="24"
@@ -30,11 +30,12 @@ def addClientToConfig(clientPubKey, clientRequestIP="unknown IP"):
 
     return clientIP
 
-@route('/request/<key>')
-def index(key):
-    clientIP = addClientToConfig(key)
+@route('/request', method=['POST'])
+def index():
+    clientKey = request.params.key
+    clientIP = addClientToConfig(clientKey, request.remote_addr)
     # TODO return text instead of HTML
-    return template('{{clientIP}} {{serverPubkey}}', clientIP=clientIP, serverPubkey=pubkey)
+    return template('{{clientIP}}|{{serverPubkey}}', clientIP=clientIP, serverPubkey=pubkey)
 
 
 run(host='localhost', port=8080)

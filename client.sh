@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SERVER_URL="https://localhost:8080/request"
+SERVER_URL="http://localhost:8080/request"
 WIREGUARD_CONFIG_DIR=./conf # for testing
 #WIREGUARD_CONFIG_DIR=./etc
 CONF=${WIREGUARD_CONFIG_DIR}/wg0.conf      
@@ -22,4 +22,11 @@ chmod 600 $CONF
 echo "[Interface]" > $CONF                 
 echo "PrivateKey = $PRIVKEY" >> $CONF
 
-RESPONSE=$(wget --quiet ${SERVER_URL}/${PUBKEY} -O -) 
+#echo "wget --quiet \"${SERVER_URL}?key=${PUBKEY}\" -O -"
+#RESPONSE=$(wget --quiet ${SERVER_URL}?key=${PUBKEY} -O -)
+
+
+
+#echo "curl --data-urlencode ${SERVER_URL}?key=${PUBKEY}"
+RESPONSE=$(curl --silent --data-urlencode key=${PUBKEY} ${SERVER_URL}) 
+echo $RESPONSE

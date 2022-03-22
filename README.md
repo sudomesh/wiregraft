@@ -7,14 +7,19 @@ This is the idea: Client shell script on OpenWRT generates pub/priv key, then ma
 # client
 
 ```
+opkg install curl
 opkg install wireguard-tools
 ```
 
 # server
 
-`python3 server.py`
-
 ```
 pip3 install bottle
 pip3 install wgconfig
+
+python3 server.py
 ```
+
+# ToDo
+
+Figure out how to use wget instead of curl. wget is included per default in openwrt and curl isn't but wget doesn't urlencode automatically
